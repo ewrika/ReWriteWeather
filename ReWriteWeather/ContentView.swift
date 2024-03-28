@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var forecastVM = ForecastViewModel()
+    @ObservedObject var weatherVM = WeatherViewModel()
+    @ObservedObject var lm = LocationManager()
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        VStack(spacing: 28) {
+
+            
+            
+            }
         }
-        .padding()
     }
-}
+
 
 #Preview {
     ContentView()
