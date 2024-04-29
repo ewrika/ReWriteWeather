@@ -9,6 +9,9 @@ import Foundation
 
 
 class ForecastService {
+    
+    
+    
     func getForecast(city: String, completion: @escaping (ForecastResponse?) -> ()) {
         guard let url = URL(string: "https://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=c9fe9ab82fefc53a641582c72462beaf&units=metric") else {
             completion(nil)

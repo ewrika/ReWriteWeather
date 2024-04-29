@@ -32,7 +32,6 @@ struct SettingsView: View {
                         }
                     }
                     Button{
-                      // AppearanceView()
                         changeTheme.toggle()
                     }label: {
                         HStack {

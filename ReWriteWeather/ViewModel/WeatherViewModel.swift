@@ -38,6 +38,8 @@ class WeatherViewModel: ObservableObject {
         return self.dateFormatter(timeStamp: self.weatherResponse.dt)
     }
     
+
+    
     var sunrise: String {
         if let sunrise = self.weatherResponse.sys.sunrise {
             return self.getTime(timeStamp: sunrise)
@@ -55,6 +57,14 @@ class WeatherViewModel: ObservableObject {
     var temperature: String {
         if let temp = self.weatherResponse.main.temp {
             return String(format: "%.1f", temp)
+        } else {
+            return "0.0"
+        }
+    }
+    
+    var temperature_like:String{
+        if let temp_like = self.weatherResponse.main.feels_like {
+            return String(format: "%.1f", temp_like)
         } else {
             return "0.0"
         }

@@ -56,95 +56,28 @@ struct HomeView: View {
                 }
                 
             }.padding()
-            VStack {
-                Text("Search Locations")
-                    .foregroundColor(.primary)
-                HStack(spacing: 32) {
-                    HStack {
-                        TextField("Enter city name", text: self.$searchField) {
-                            self.temperaturaVM.search(searchText: self.searchField)
-                        }
-                        .onAppear() {
-                            self.temperaturaVM.getWeatherByZipCode(by: self.zip, country_code: self.country_code)
-                        }
-                        .padding()
-                        
-                        Button(action: { self.searchField = "" }) {
-                            Text("Clear")
-                        }
-                        .padding(.trailing)
-                    }
-                    .onAppear() {
-                        self.temperaturaVM.getWeatherByZipCode(by: self.zip, country_code: self.country_code)
-                    }
-                    .background(Color.white.opacity(0.30))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    
-                }   //             .onAppear() {
-//self.temperaturaVM.getWeatherByZipCode(by: self.zip, country_code: self.country_code)
-        //        }
-            }
             Divider()
+            .overlay(Color(.green))
             
-            ScrollView(.vertical) {
-                VStack(alignment:.center,spacing: 2){
-                    Text("Прямо Сейчас")
-                        .font(.system(size: 40))
-                        .font(.title)
-                        .fontWeight(.bold)
-                }
+            ScrollView(){
+                RightNowView(temperaturaVM: WeatherViewModel())
                 
-                
-                VStack(alignment:.center){
-                    VStack(alignment:.leading) {
-                        HStack{
-                            Image(temperaturaVM.weatherIcon)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 200,height: 200)
-                                .offset(y:-20)
-                            VStack {
-                                Text(temperaturaVM.temperature)
-                                    .font(.system(size: 50))
-                                    .fontWeight(.bold)
-                                
-                                Text("Feels like " + temperaturaVM.temperature)
-                                    .font(.system(size: 20))
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.secondary)
-                                
-                            }.offset(y:-20)
-                        }
+                Button("Complications that refresh more often!\n Updgrade now ->")
+                {
+                    showDonate.toggle()
+                }.font(.system(size: 18))
+                    .fontWeight(.bold)
+                    .foregroundStyle(.white)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 25)
+                            .stroke(Color.white, lineWidth: 0)
+                    )                .padding()
+                    .background(Color.indigo)
+                    .cornerRadius(25)
+                    .sheet(isPresented:$showDonate){
+                           DonateView()
                     }
-                }
-                
-                HStack{
-                    VStack{
-                        ZStack{
-                            Circle()
-                                .frame(width: 30,height: 30)
-                                .foregroundStyle(.indigo)
-                            Image(systemName: "arrow.up.forward").foregroundColor(.white)
-                        }
-                        Text(Image(systemName: "drop.fill")).foregroundStyle(.gray).font(.system(size:30))
-                        ZStack{
-                            Ellipse().fill(LinearGradient(gradient:Gradient(colors: [.red,.yellow,.green]),startPoint: .top,endPoint: .bottom))
-                                .frame(width: 30,height: 30)
-                            Image(systemName: "arrow.down")
-                                .foregroundColor(.white)
-                        }
-                        Text(Image(systemName: "sun.horizon")).foregroundStyle(.yellow).font(.system(size:30))
-                    }
-                    VStack(alignment:.leading,spacing:25){
-                        
-                        Text(temperaturaVM.wind_speed + "mph winds from the southwest")
-                        
-                        Text(temperaturaVM.humidity + "%")
-                        Text("Pressure 1005hPA and falling")
-                        Text(temperaturaVM.sunrise + " -> " + temperaturaVM.sunset)
-                    }
-                }.padding()
-                
+            }
                 
                 VStack{
                     Text("5-day forecast")
@@ -157,7 +90,7 @@ struct HomeView: View {
                             ForEach(self.forecastVM.forecastResponse.list, id: \.dt) { forecast in
                                 
                                 ZStack{
-                
+    
                                     // MARK : Card
                                     RoundedRectangle(cornerRadius: 10.0)
                                         .fill(Color.yellow.opacity( 1))
@@ -181,7 +114,7 @@ struct HomeView: View {
                                         }
                                     }
                                 }
-                            }
+                            
                     }.onAppear() {
     
                         self.forecastVM.getForecastByZip(by: self.zip, country_code: self.country_code)
@@ -192,33 +125,15 @@ struct HomeView: View {
                     
                 }
                 
-                // BUTTOn
-                Button("Complications that refresh more often!\n Updgrade now ->")
-                {
-                    showDonate.toggle()
-                }.font(.system(size: 18))
-                    .fontWeight(.bold)
-                    .foregroundStyle(.white)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 25)
-                            .stroke(Color.white, lineWidth: 0)
-                    )                .padding()
-                    .background(Color.indigo)
-                    .cornerRadius(25)
-                    .sheet(isPresented:$showDonate){
-                           DonateView()
-                    }
+
             }
         .preferredColorScheme(userTheme.colorScheme)
         }
         
     }
             
-        
-
-
-
             
 #Preview {
     HomeView().environmentObject(WeatherViewModel())
 }
+
